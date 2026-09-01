@@ -1,0 +1,6 @@
+{
+  "name": "Jagdamb Coaching Center",
+  "description": "Comprehensive coaching center web portal featuring course explorer, online admission system, results & achievers showcase, notices board, photo gallery, contact inquiries, and student portal backed by PostgreSQL.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
