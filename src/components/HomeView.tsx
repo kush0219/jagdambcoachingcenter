@@ -128,7 +128,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               <div className="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-600 font-medium">
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                  <span>34 Abacus Formulas</span>
+                  <span>Abacus & Vedic Mathe</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500" />
