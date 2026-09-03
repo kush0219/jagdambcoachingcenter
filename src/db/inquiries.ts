@@ -49,3 +49,12 @@ export async function updateInquiryStatus(id: number, status: string) {
     throw new Error('Failed to update inquiry status', { cause: error });
   }
 }
+
+export async function deleteInquiry(id: number) {
+  try {
+    return await db.delete(inquiries).where(eq(inquiries.id, id)).returning();
+  } catch (error) {
+    console.error('Failed to delete inquiry:', error);
+    throw new Error('Failed to delete inquiry', { cause: error });
+  }
+}

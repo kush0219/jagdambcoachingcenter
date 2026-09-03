@@ -12,17 +12,35 @@ export interface UserInput {
   role?: string;
 }
 
+const ADMIN_EMAILS = [
+  'kushbhusareiit@gmail.com',
+  'admin@jagdamb.com',
+  'director@jagdamb.com',
+  'jagdambcoachingcenter@gmail.com',
+];
+
+export function isEmailAdmin(email?: string | null): boolean {
+  if (!email) return false;
+  const normalized = email.trim().toLowerCase();
+  return ADMIN_EMAILS.includes(normalized) || normalized.includes('admin');
+}
+
 export async function getOrCreateUser(userData: UserInput) {
   try {
+    const isAdmin = isEmailAdmin(userData.email);
+    const assignedRole = isAdmin ? 'admin' : (userData.role || 'student');
+
     const existing = await db.select().from(users).where(eq(users.uid, userData.uid)).limit(1);
     
     if (existing.length > 0) {
+      const newRole = isAdmin ? 'admin' : (existing[0].role || 'student');
       const updated = await db.update(users)
         .set({
           email: userData.email,
           displayName: userData.displayName || existing[0].displayName,
           photoUrl: userData.photoUrl || existing[0].photoUrl,
           phone: userData.phone || existing[0].phone,
+          role: newRole,
           updatedAt: new Date(),
         })
         .where(eq(users.uid, userData.uid))
@@ -37,7 +55,7 @@ export async function getOrCreateUser(userData: UserInput) {
         displayName: userData.displayName || '',
         photoUrl: userData.photoUrl || '',
         phone: userData.phone || '',
-        role: userData.role || 'student',
+        role: assignedRole,
       })
       .returning();
 

@@ -69,6 +69,25 @@ export async function deleteNotice(id: number) {
   }
 }
 
+export async function updateNotice(id: number, data: Partial<{
+  title: string;
+  marathiTitle: string;
+  category: string;
+  publishDate: string;
+  content: string;
+  isNew: number;
+  priority: string;
+  attachmentUrl: string;
+}>) {
+  try {
+    const updated = await db.update(notices).set(data).where(eq(notices.id, id)).returning();
+    return updated[0];
+  } catch (error) {
+    console.error('Failed to update notice:', error);
+    throw new Error('Failed to update notice', { cause: error });
+  }
+}
+
 export async function getAchievers() {
   try {
     return await db.select().from(achievers).orderBy(asc(achievers.orderIndex));
@@ -87,6 +106,7 @@ export async function createAchiever(data: {
   year: string;
   photoUrl?: string;
   citation?: string;
+  orderIndex?: number;
 }) {
   try {
     const inserted = await db.insert(achievers).values(data).returning();
@@ -94,6 +114,35 @@ export async function createAchiever(data: {
   } catch (error) {
     console.error('Failed to create achiever:', error);
     throw new Error('Failed to create achiever', { cause: error });
+  }
+}
+
+export async function updateAchiever(id: number, data: Partial<{
+  studentName: string;
+  marathiName: string;
+  rank: string;
+  examName: string;
+  score: string;
+  year: string;
+  photoUrl: string;
+  citation: string;
+  orderIndex: number;
+}>) {
+  try {
+    const updated = await db.update(achievers).set(data).where(eq(achievers.id, id)).returning();
+    return updated[0];
+  } catch (error) {
+    console.error('Failed to update achiever:', error);
+    throw new Error('Failed to update achiever', { cause: error });
+  }
+}
+
+export async function deleteAchiever(id: number) {
+  try {
+    return await db.delete(achievers).where(eq(achievers.id, id)).returning();
+  } catch (error) {
+    console.error('Failed to delete achiever:', error);
+    throw new Error('Failed to delete achiever', { cause: error });
   }
 }
 
@@ -106,6 +155,107 @@ export async function getGalleryItems(category?: string) {
   } catch (error) {
     console.error('Failed to get gallery items:', error);
     throw new Error('Failed to fetch gallery items', { cause: error });
+  }
+}
+
+export async function createGalleryItem(data: {
+  title: string;
+  category: string;
+  imageUrl: string;
+  description?: string;
+  eventDate?: string;
+  orderIndex?: number;
+}) {
+  try {
+    const inserted = await db.insert(galleryItems).values(data).returning();
+    return inserted[0];
+  } catch (error) {
+    console.error('Failed to create gallery item:', error);
+    throw new Error('Failed to create gallery item', { cause: error });
+  }
+}
+
+export async function updateGalleryItem(id: number, data: Partial<{
+  title: string;
+  category: string;
+  imageUrl: string;
+  description: string;
+  eventDate: string;
+  orderIndex: number;
+}>) {
+  try {
+    const updated = await db.update(galleryItems).set(data).where(eq(galleryItems.id, id)).returning();
+    return updated[0];
+  } catch (error) {
+    console.error('Failed to update gallery item:', error);
+    throw new Error('Failed to update gallery item', { cause: error });
+  }
+}
+
+export async function deleteGalleryItem(id: number) {
+  try {
+    return await db.delete(galleryItems).where(eq(galleryItems.id, id)).returning();
+  } catch (error) {
+    console.error('Failed to delete gallery item:', error);
+    throw new Error('Failed to delete gallery item', { cause: error });
+  }
+}
+
+export async function updateCourse(id: number, data: Partial<{
+  title: string;
+  marathiTitle: string;
+  tagline: string;
+  description: string;
+  icon: string;
+  ageGroup: string;
+  batchSize: string;
+  duration: string;
+  classes: string;
+  features: string;
+  curriculum: string;
+  orderIndex: number;
+  isPopular: number;
+}>) {
+  try {
+    const updated = await db.update(courses).set(data).where(eq(courses.id, id)).returning();
+    return updated[0];
+  } catch (error) {
+    console.error('Failed to update course:', error);
+    throw new Error('Failed to update course', { cause: error });
+  }
+}
+
+export async function createCourse(data: {
+  slug: string;
+  title: string;
+  marathiTitle?: string;
+  tagline: string;
+  description: string;
+  icon: string;
+  ageGroup: string;
+  batchSize: string;
+  duration: string;
+  classes: string;
+  features: string;
+  curriculum: string;
+  orderIndex?: number;
+  isPopular?: number;
+}) {
+  try {
+    const inserted = await db.insert(courses).values(data).returning();
+    return inserted[0];
+  } catch (error) {
+    console.error('Failed to create course:', error);
+    throw new Error('Failed to create course', { cause: error });
+  }
+}
+
+export async function deleteCourse(id: number) {
+  try {
+    return await db.delete(courses).where(eq(courses.id, id)).returning();
+  } catch (error) {
+    console.error('Failed to delete course:', error);
+    throw new Error('Failed to delete course', { cause: error });
   }
 }
 

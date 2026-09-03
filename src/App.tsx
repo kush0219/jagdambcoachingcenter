@@ -44,13 +44,31 @@ export function AppContent() {
         fetch('/api/testimonials'),
       ]);
 
-      if (coursesRes.ok) setCourses(await coursesRes.json());
-      if (noticesRes.ok) setNotices(await noticesRes.json());
-      if (achieversRes.ok) setAchievers(await achieversRes.json());
-      if (galleryRes.ok) setGalleryItems(await galleryRes.json());
-      if (testRes.ok) setTestimonials(await testRes.json());
+      const safeJson = async (res: Response) => {
+        if (!res.ok) return null;
+        try {
+          const text = await res.text();
+          return JSON.parse(text);
+        } catch {
+          return null;
+        }
+      };
+
+      const [coursesData, noticesData, achieversData, galleryData, testData] = await Promise.all([
+        safeJson(coursesRes),
+        safeJson(noticesRes),
+        safeJson(achieversRes),
+        safeJson(galleryRes),
+        safeJson(testRes),
+      ]);
+
+      if (Array.isArray(coursesData)) setCourses(coursesData);
+      if (Array.isArray(noticesData)) setNotices(noticesData);
+      if (Array.isArray(achieversData)) setAchievers(achieversData);
+      if (Array.isArray(galleryData)) setGalleryItems(galleryData);
+      if (Array.isArray(testData)) setTestimonials(testData);
     } catch (error) {
-      console.error('Error loading coaching center data:', error);
+      console.warn('Error loading coaching center data:', error);
     } finally {
       setLoading(false);
     }

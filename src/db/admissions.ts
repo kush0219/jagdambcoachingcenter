@@ -91,3 +91,39 @@ export async function updateAdmissionStatus(id: number, status: string) {
     throw new Error('Failed to update admission status', { cause: error });
   }
 }
+
+export async function updateAdmission(id: number, data: Partial<{
+  studentName: string;
+  parentName: string;
+  email: string;
+  phone: string;
+  whatsapp: string;
+  grade: string;
+  course: string;
+  schoolName: string;
+  previousScore: string;
+  address: string;
+  batchPreference: string;
+  notes: string;
+  status: string;
+}>) {
+  try {
+    const updated = await db.update(admissions)
+      .set(data)
+      .where(eq(admissions.id, id))
+      .returning();
+    return updated[0];
+  } catch (error) {
+    console.error('Failed to update admission:', error);
+    throw new Error('Failed to update admission', { cause: error });
+  }
+}
+
+export async function deleteAdmission(id: number) {
+  try {
+    return await db.delete(admissions).where(eq(admissions.id, id)).returning();
+  } catch (error) {
+    console.error('Failed to delete admission:', error);
+    throw new Error('Failed to delete admission', { cause: error });
+  }
+}
