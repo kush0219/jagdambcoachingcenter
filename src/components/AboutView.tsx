@@ -87,7 +87,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ setActiveTab, openAdmissio
               </div>
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
                 <CheckCircle className="w-4 h-4 text-orange-600 shrink-0" />
-                <span>34 Formulas Abacus Lab</span>
+                <span>Formulas Abacus Lab</span>
               </div>
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
                 <CheckCircle className="w-4 h-4 text-orange-600 shrink-0" />
