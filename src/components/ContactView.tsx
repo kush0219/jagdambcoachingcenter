@@ -50,6 +50,14 @@ export const ContactView: React.FC<ContactViewProps> = ({ setActiveTab }) => {
         }),
       });
 
+      const rawText = await res.text();
+      let data: any = null;
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        data = null;
+      }
+
       if (res.ok) {
         setSuccess(true);
         setFullName('');
@@ -57,8 +65,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ setActiveTab }) => {
         setPhone('');
         setMessage('');
       } else {
-        const errData = await res.json();
-        setError(errData.error || 'Failed to submit message. Please try again.');
+        setError(data?.error || 'Failed to submit message. Please try again.');
       }
     } catch (err: any) {
       setError('Network error. Please check your connection and retry.');

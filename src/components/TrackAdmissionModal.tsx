@@ -43,12 +43,18 @@ export const TrackAdmissionModal: React.FC<TrackAdmissionModalProps> = ({
 
     try {
       const res = await fetch(`/api/admissions/${encodeURIComponent(appNumber.trim())}`);
-      if (res.ok) {
-        const data = await res.json();
+      const rawText = await res.text();
+      let data: any = null;
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        data = null;
+      }
+
+      if (res.ok && data) {
         setResult(data);
       } else {
-        const err = await res.json();
-        setError(err.error || 'No admission record found with this application number.');
+        setError(data?.error || 'No admission record found with this application number.');
       }
     } catch (err) {
       setError('Failed to reach server. Please check your internet connection.');

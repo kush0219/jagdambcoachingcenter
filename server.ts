@@ -45,6 +45,7 @@ async function startServer() {
   const PORT = 3000;
 
   app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
   // Health check
   app.get('/api/health', (req, res) => {
@@ -61,7 +62,16 @@ async function startServer() {
       const { username, password } = req.body;
       const normalizedUser = (username || '').trim().toLowerCase();
       const validPasswords = ['jagdamb@2026', 'admin123', 'admin', '737831', '1900', 'jagdamb2026'];
-      const validUsers = ['admin', 'jagdamb.admin', 'kushbhusareiit@gmail.com', 'director', 'jagdamb', 'admin@jagdamb.com'];
+      const validUsers = [
+        'admin',
+        'jagdamb.admin',
+        'kushbhusareiit@gmail.com',
+        'director',
+        'jagdamb',
+        'admin@jagdamb.com',
+        'director@jagdamb.com',
+        'jagdambcoachingcenter@gmail.com'
+      ];
 
       const isPassValid = validPasswords.includes((password || '').trim());
       const isUserValid = validUsers.includes(normalizedUser) || isEmailAdmin(normalizedUser);
@@ -85,6 +95,10 @@ async function startServer() {
       console.error('API /admin/login error:', error);
       res.status(500).json({ error: 'Authentication failed' });
     }
+  });
+
+  app.all('/api/admin/login', (req, res) => {
+    res.status(405).json({ error: 'Method Not Allowed. Use POST for /api/admin/login' });
   });
 
   // Admin Dashboard Overview Statistics

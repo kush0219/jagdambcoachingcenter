@@ -78,12 +78,18 @@ export const AdmissionModal: React.FC<AdmissionModalProps> = ({
         }),
       });
 
-      if (res.ok) {
-        const data = await res.json();
+      const rawText = await res.text();
+      let data: any = null;
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        data = null;
+      }
+
+      if (res.ok && data) {
         setSubmittedData(data);
       } else {
-        const errData = await res.json();
-        setError(errData.error || 'Failed to submit admission application.');
+        setError(data?.error || 'Failed to submit admission application.');
       }
     } catch (err: any) {
       setError('Network connection error. Please try again.');
